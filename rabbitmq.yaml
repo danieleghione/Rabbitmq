@@ -1,0 +1,26 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  override:
+    service:
+      spec:
+        ports:
+          - name: mqtt
+            protocol: TCP
+            port: 1883
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers:
+              - name: rabbitmq
+                ports:
+                  - containerPort: 1883
+                    name: mqtt
+                    protocol: TCP
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_mqtt
